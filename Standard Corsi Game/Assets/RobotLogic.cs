@@ -14,7 +14,6 @@ public class RobotLogic : MonoBehaviour
     public int level = 2;
     private int player_level = 0;
 
-    bool robot = false;
     public bool player = false;
 
     private int my_random;
@@ -22,6 +21,7 @@ public class RobotLogic : MonoBehaviour
     public Button start_button;
     public Text game_over_text;
     public Text score_text;
+    public Text orderPrompt;
     private int score;
 
     // Start is called before the first frame update
@@ -43,36 +43,30 @@ public class RobotLogic : MonoBehaviour
                 player_level += 1;
                 score += 1;
                 score_text.text = score.ToString();
+                Debug.Log("Correnct answer");
             }
             else
             {
+                Debug.Log("Wrong answer");
                 GameOver();
             }
+
             if (player_level == level) //no more buttons to press
             {
                 level += 1; //set level for next time 1 higher
                 player_level = 0; //reset player level for next round
                 player = false;
-                robot = true; //get robot ready for next round 
+                StartCoroutine(Robot()); //execute code over intervals of time
             }
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (robot)
-        {
-            robot = false;
-            StartCoroutine(Robot());
-        }
-        
-    }
 
     //wait one seconds, get random value, change color of button @ random value,
     //wait for show_time seconds, change color back, wait pause_time seconds
     private IEnumerator Robot()
     {
+        orderPrompt.text = "";
         yield return new WaitForSeconds(1f); //1 sec
         for (int i = 0; i < level; i++)
         {
@@ -85,23 +79,29 @@ public class RobotLogic : MonoBehaviour
             my_buttons[color_list[i]].ClickedColor();
             yield return new WaitForSeconds(show_time);
             my_buttons[color_list[i]].UnClickedColor();
-            yield return new WaitForSeconds(pause_time);
-
+            yield return new WaitForSeconds(pause_time);           
         }
 
+        if (Random.Range(0f, 1f) < 0.5f)
+        {
+            color_list.Reverse();
+            orderPrompt.text = "Reverse";
+        }        
+        else
+            orderPrompt.text = "Normal";
+
+        player = true;
     }
 
     public void StartGame()
     {
-        robot = true;
+        StartCoroutine(Robot()); //execute code over intervals of time
         score = 0;
         player_level = 0;
         level = 2;
         game_over_text.text = "";
         score_text.text = score.ToString();
-        start_button.interactable = false;
-
-        player = true; 
+        start_button.interactable = false;        
     }
 
     void GameOver()
