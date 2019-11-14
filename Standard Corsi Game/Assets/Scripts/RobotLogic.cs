@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Project.Scoreboards;
+using TMPro;
 
 public class RobotLogic : MonoBehaviour
 {
@@ -22,6 +24,10 @@ public class RobotLogic : MonoBehaviour
     public Text game_over_text;
     public Text score_text;
     public Text orderPrompt;
+    public Scoreboard scoreboard;
+
+    public GameObject namePrompt;
+    public TMP_InputField inputField;
     private int score;
 
     // Start is called before the first frame update
@@ -109,5 +115,16 @@ public class RobotLogic : MonoBehaviour
         game_over_text.text = "Game Over";
         start_button.interactable = true;
         player = false;
+        namePrompt.SetActive(true);
     }
+
+
+    public void ConfirmName() 
+    {
+        namePrompt.SetActive(false);
+        var enteredName = inputField.text;
+        scoreboard.AddEntry(new ScoreboardEntryData() { entry_name = enteredName, entry_score = score});
+        scoreboard.gameObject.SetActive(true);
+    }
+
 }

@@ -31,6 +31,12 @@ namespace Project.Scoreboards
             AddEntry(test_entry_data);
         }
 
+        [ContextMenu("Delete Save File")]
+        public void DeleteSaveFile() 
+        {
+            File.Delete(save_path);
+        }
+
         public void AddEntry(ScoreboardEntryData scoreboardEntryData)
         {
             ScoreboardSavedData saved_scores = GetSavedScores();
@@ -68,6 +74,8 @@ namespace Project.Scoreboards
             }
             foreach (ScoreboardEntryData high_score in saved_scores.high_scores) //loop through each score in high_scores list
             {
+                Debug.Log("check if scoreboard entry object null; " + (scoreboard_entry_object == null));
+                Debug.Log("check if high_scores_holder_transform object null; " + (high_scores_holder_transform == null));
                 Instantiate(scoreboard_entry_object, high_scores_holder_transform). //instantiate means to "spawn in"
                     GetComponent<ScoreboardEntryUI>().Initialize(high_score); //create a new UI entry with this loop's high score info
             }
