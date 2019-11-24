@@ -7,6 +7,7 @@ using TMPro;
 
 public class RobotLogic : MonoBehaviour
 {
+    public LogIn login;
     public ClickButton[] my_buttons;
     public List<int> color_list; 
 
@@ -115,16 +116,21 @@ public class RobotLogic : MonoBehaviour
         game_over_text.text = "Game Over";
         start_button.interactable = true;
         player = false;
-        namePrompt.SetActive(true);
+        // namePrompt.SetActive(true);
+        CreateScoreEntry(login.Username);
     }
 
-
-    public void ConfirmName() 
+    public void CreateScoreEntry(string userName) 
     {
         namePrompt.SetActive(false);
-        var enteredName = inputField.text;
-        scoreboard.AddEntry(new ScoreboardEntryData() { entry_name = enteredName, entry_score = score});
+        var enteredName = userName;
+        scoreboard.AddEntry(new ScoreboardEntryData() { entry_name = enteredName, entry_score = score });
         scoreboard.gameObject.SetActive(true);
+    }
+    
+    public void ConfirmName() 
+    {
+        CreateScoreEntry(inputField.text);
     }
 
 }
