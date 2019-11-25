@@ -99,13 +99,13 @@ namespace Project.Scoreboards
 
                 Debug.Log("Json: " + json);
                 //https://stackoverflow.com/questions/4940124/how-can-i-delete-the-first-n-lines-in-a-string-in-c
-                string[] lines = json.Split(Environment.NewLine.ToCharArray());
+                int n = 2;
+                string[] lines = json
+                    .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                    .Skip(n)
+                    .ToArray();
 
-                var output = "";
-                for (var i = 3; i < lines.Length; i++) 
-                {
-                    output += lines[i] + Environment.NewLine;
-                }
+                string output = string.Join(Environment.NewLine, lines);
 
                 Debug.Log("Output: " + output);
 
@@ -120,12 +120,13 @@ namespace Project.Scoreboards
             using (StreamReader stream = new StreamReader(save_path)) //using is a good way to stop leakages like leaving a file open
             {
                 string json = stream.ReadToEnd();
-                string[] lines = json.Split(Environment.NewLine.ToCharArray());
- 
-                for (var i = 0; i < 3; i++)
-                {
-                    first2Lines += lines[i] + Environment.NewLine;
-                }
+                int n = 2;
+                string[] lines = json
+                    .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                    .Take(n)
+                    .ToArray();
+
+                first2Lines = string.Join(Environment.NewLine, lines);
 
                 Debug.Log("Encrypted username and pass (2 lines) : " + first2Lines);
 
