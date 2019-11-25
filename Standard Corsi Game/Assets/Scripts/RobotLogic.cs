@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿//this class is based on https://www.youtube.com/watch?v=OmynDREHO_8&t=1987s
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Project.Scoreboards;
 using TMPro;
+using System; 
 
 public class RobotLogic : MonoBehaviour
 {
@@ -26,6 +29,8 @@ public class RobotLogic : MonoBehaviour
     public Text score_text;
     public Text orderPrompt;
     public Scoreboard scoreboard;
+    public PlayerScoreboard playerScoreboard;
+    public GameObject scoreboardsParent;
 
     public GameObject namePrompt;
     public TMP_InputField inputField;
@@ -34,6 +39,8 @@ public class RobotLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(Application.persistentDataPath);
+
         for (int i = 0; i < my_buttons.Length; i++)
         {
             my_buttons[i].onClick += ButtonClicked;
@@ -79,7 +86,7 @@ public class RobotLogic : MonoBehaviour
         {
             if (color_list.Count < level)
             {
-                my_random = Random.Range(0, my_buttons.Length);
+                my_random = UnityEngine.Random.Range(0, my_buttons.Length);
                 color_list.Add(my_random); //store to save color order for later comparison
             }
             
@@ -89,7 +96,7 @@ public class RobotLogic : MonoBehaviour
             yield return new WaitForSeconds(pause_time);           
         }
 
-        if (Random.Range(0f, 1f) < 0.5f)
+        if (UnityEngine.Random.Range(0f, 1f) < 0.5f)
         {
             color_list.Reverse();
             orderPrompt.text = "Reverse";
@@ -118,6 +125,8 @@ public class RobotLogic : MonoBehaviour
         player = false;
         // namePrompt.SetActive(true);
         CreateScoreEntry(login.Username);
+        CreatePlayerStatsEntry();
+        scoreboardsParent.SetActive(true);
     }
 
     public void CreateScoreEntry(string userName) 
@@ -125,9 +134,15 @@ public class RobotLogic : MonoBehaviour
         namePrompt.SetActive(false);
         var enteredName = userName;
         scoreboard.AddEntry(new ScoreboardEntryData() { entry_name = enteredName, entry_score = score });
-        scoreboard.gameObject.SetActive(true);
     }
-    
+
+    public void CreatePlayerStatsEntry()
+    {
+        namePrompt.SetActive(false);
+        playerScoreboard.AddEntry(new ScoreboardEntryData() { entry_name = DateTime.Now.ToString(), entry_score = score });
+    }
+
+
     public void ConfirmName() 
     {
         CreateScoreEntry(inputField.text);

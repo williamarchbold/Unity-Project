@@ -3,11 +3,13 @@
 using System;
 using System.IO; //input output
 using UnityEngine;
+using System.Linq;
 
 namespace Project.Scoreboards
 {
-    public class Scoreboard : MonoBehaviour
+    public class PlayerScoreboard : MonoBehaviour
     {
+        public LogIn login;
         [SerializeField] private int max_scoreboard_entries = 5;
         [SerializeField] private Transform high_scores_holder_transform = null;
         [SerializeField] private GameObject scoreboard_entry_object = null;
@@ -16,7 +18,7 @@ namespace Project.Scoreboards
         [SerializeField] ScoreboardEntryData test_entry_data = new ScoreboardEntryData();
 
         //make a safe path to save to my computer
-        private string save_path => $"{Application.persistentDataPath}/highscores.json";  //where the project is stored. can be .txt not necessarily json
+        private string save_path => Application.persistentDataPath + "\\" + login.Username + ".txt";  //where the project is stored. can be .txt not necessarily json
 
         private void Start()
         {
@@ -34,7 +36,7 @@ namespace Project.Scoreboards
         }
 
         [ContextMenu("Delete Save File")]
-        public void DeleteSaveFile() 
+        public void DeleteSaveFile()
         {
             File.Delete(save_path);
         }
@@ -95,15 +97,44 @@ namespace Project.Scoreboards
             {
                 string json = stream.ReadToEnd();
 
-                return JsonUtility.FromJson<ScoreboardSavedData>(json);
+                Debug.Log("Json: " + json);
+                //https://stackoverflow.com/questions/4940124/how-can-i-delete-the-first-n-lines-in-a-string-in-c
+                string[] lines = json.Split(Environment.NewLine.ToCharArray());
+
+                var output = "";
+                for (var i = 3; i < lines.Length; i++) 
+                {
+                    output += lines[i] + Environment.NewLine;
+                }
+
+                Debug.Log("Output: " + output);
+
+                return string.IsNullOrEmpty(output) ? new ScoreboardSavedData() : JsonUtility.FromJson<ScoreboardSavedData>(output);
             }
         }
 
         private void SaveScores(ScoreboardSavedData scoreboardSavedData) //this will save scores to file
         {
+            var first2Lines = "";
+
+            using (StreamReader stream = new StreamReader(save_path)) //using is a good way to stop leakages like leaving a file open
+            {
+                string json = stream.ReadToEnd();
+                string[] lines = json.Split(Environment.NewLine.ToCharArray());
+ 
+                for (var i = 0; i < 3; i++)
+                {
+                    first2Lines += lines[i] + Environment.NewLine;
+                }
+
+                Debug.Log("Encrypted username and pass (2 lines) : " + first2Lines);
+
+            }
+
             using (StreamWriter stream = new StreamWriter(save_path))
             {
                 string json = JsonUtility.ToJson(scoreboardSavedData, true); //format to true makes it look nice
+                stream.Write(first2Lines + Environment.NewLine);
                 stream.Write(json);
             }
         }

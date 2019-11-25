@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// this class is based on however modifcations were made. 
+//https://www.youtube.com/watch?v=FBo9OdEF_D4&t=21s
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +48,7 @@ public class LogIn : MonoBehaviour, IEventSystemHandler
 
     public void LoginButton()
     {
-        InputField usernameField = user_name.GetComponent<InputField>();
+        InputField usernameField = user_name.GetComponent<InputField>(); //video had this info in update, but bad for memory. update occurs all thetime
         InputField passwordField = password.GetComponent<InputField>();
         username_string = usernameField.text;
         password_string = passwordField.text;
