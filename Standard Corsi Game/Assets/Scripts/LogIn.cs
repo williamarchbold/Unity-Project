@@ -53,7 +53,7 @@ public class LogIn : MonoBehaviour, IEventSystemHandler
         username_string = usernameField.text;
         password_string = passwordField.text;
 
-        string save_path = Application.persistentDataPath + "\\" + username_string + ".txt";
+        string save_path = Application.persistentDataPath + "\\" + Register.EncryptString(username_string) + ".txt";
         if (username_string != "")
         {
             if (!System.IO.File.Exists(save_path))
@@ -64,18 +64,10 @@ public class LogIn : MonoBehaviour, IEventSystemHandler
         // read all lines from file into string array
         user_profile = System.IO.File.ReadAllLines(save_path);
 
-        if (password_string !="")
+        if (password_string != "")
         {
-            string decrpyted_password = "";
-            
-                
-            int i = 1;
-            foreach (char c in user_profile[1])
-            {
-                i++;
-                char decrypted_char = (char)(c / i);
-                decrpyted_password += decrypted_char.ToString();
-            }
+            string decrpyted_password = DecryptString(user_profile[1]);
+
             
             if (decrpyted_password == password_string)
             {
@@ -89,6 +81,27 @@ public class LogIn : MonoBehaviour, IEventSystemHandler
                 Debug.LogWarning("incorrect password!");
             }
         }
+    }
+
+    public static string DecryptString(string input) 
+    {
+        string decrpyted = "";
+
+
+        int i = 1;
+        foreach (char c in input)
+        {
+            i++;
+            char decrypted_char = ' ';
+            if (c == 'a')
+                decrypted_char = 'z';
+            else if (c == 'A')
+                decrypted_char = 'Z';
+            else
+                decrypted_char = (char)(c - 1);
+            decrpyted += decrypted_char.ToString();
+        }
+        return decrpyted;
     }
 }
 

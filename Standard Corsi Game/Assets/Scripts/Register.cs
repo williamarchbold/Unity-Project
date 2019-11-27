@@ -54,38 +54,20 @@ public class Register : MonoBehaviour
         password_string = passwordField.text;
         confirm_password_string = confirm_password_field.text;
 
-
-        //string save_path = @"C:\Users\William Archbold\Desktop\Unity Project\" + username_string + ".txt";
-        string save_path = Application.persistentDataPath + "\\" + username_string + ".txt";
-
-        if (username_string != null)
-        {
-            if (!System.IO.File.Exists(save_path)) //stream writer will write file automatically if it doesn't exist. https://answers.unity.com/questions/990496/ioexception-sharing-violation-on-path-please-help.html
-            {
-                //System.IO.File.Create(save_path);
-            }
-        }
+               
         if (confirm_password_string != password_string)
         {
             Debug.LogWarning("Passwords don't match!");
         }
         else
         {
-            bool password_is_clear = true;
-            string encrypted_password = "";
-            int i = 1;
-            foreach (char c in password_string)
-            {
-                if (password_is_clear)
-                {
-                    password_string = "";
-                    password_is_clear = false;
-                }
-                i++;
-                char encrypted_char = (char)(c * i); //multiplying by i then get back to char. each char times another number
-                encrypted_password += encrypted_char.ToString();
-            }
-            form = username_string + System.Environment.NewLine + encrypted_password; //put username and encrypted password into a single string
+            string encrypted_password = EncryptString(password_string);
+            string encrypted_username = EncryptString(username_string);
+
+            //string save_path = @"C:\Users\William Archbold\Desktop\Unity Project\" + username_string + ".txt";
+            string save_path = Application.persistentDataPath + "\\" + encrypted_username + ".txt";
+
+            form = encrypted_username + System.Environment.NewLine + encrypted_password; //put username and encrypted password into a single string
             System.IO.File.WriteAllText(save_path, form);
 
             user_name.GetComponent<InputField>().text = "";
@@ -94,5 +76,26 @@ public class Register : MonoBehaviour
 
             print("Registration complete!");
         }
+    }
+
+
+    public static string EncryptString(string input) 
+    {
+        string encrypted = "";
+        int i = 1;
+        foreach (char c in input)
+        {
+            i++;
+            char encrypted_char = ' ';
+            if (c == 'z')
+                encrypted_char = 'a';
+            else if (c == 'Z')
+                encrypted_char = 'A';
+            else
+             encrypted_char = (char)(c + 1); //multiplying by i then get back to char. each char times another number
+            encrypted += encrypted_char.ToString();
+        }
+
+        return encrypted;
     }
 }

@@ -18,7 +18,7 @@ namespace Project.Scoreboards
         [SerializeField] ScoreboardEntryData test_entry_data = new ScoreboardEntryData();
 
         //make a safe path to save to my computer
-        private string save_path => Application.persistentDataPath + "\\" + login.Username + ".txt";  //where the project is stored. can be .txt not necessarily json
+        private string save_path => Application.persistentDataPath + "\\" + Register.EncryptString(login.Username) + ".txt";  //where the project is stored. can be .txt not necessarily json
 
         private void Start()
         {
@@ -101,30 +101,32 @@ namespace Project.Scoreboards
                 //https://stackoverflow.com/questions/4940124/how-can-i-delete-the-first-n-lines-in-a-string-in-c
                 int n = 2;
                 string[] lines = json
-                    .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                    .Skip(n)
-                    .ToArray();
+                    .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries) //split up by Environment.NewLine
+                    .Skip(n) //skip n first entries
+                    .ToArray(); //convert to an array to be able to use string.Join 
 
-                string output = string.Join(Environment.NewLine, lines);
+                string output = string.Join(Environment.NewLine, lines); //put everything back together minus first two lines of original source
 
-                Debug.Log("Output: " + output);
+                Debug.Log("Output: " + output); //check to ensure all of the json is intact and without first 2 lines
 
                 return string.IsNullOrEmpty(output) ? new ScoreboardSavedData() : JsonUtility.FromJson<ScoreboardSavedData>(output);
             }
         }
 
+
+        //based on https://stackoverflow.com/questions/4940124/how-can-i-delete-the-first-n-lines-in-a-string-in-c
         private void SaveScores(ScoreboardSavedData scoreboardSavedData) //this will save scores to file
         {
-            var first2Lines = "";
+            var first2Lines = ""; 
 
             using (StreamReader stream = new StreamReader(save_path)) //using is a good way to stop leakages like leaving a file open
             {
                 string json = stream.ReadToEnd();
                 int n = 2;
                 string[] lines = json
-                    .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                    .Take(n)
-                    .ToArray();
+                    .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries) //return collection of items 
+                    .Take(n) //take takes first n elements from collection. oppposite of 
+                    .ToArray(); //converts collection to an array 
 
                 first2Lines = string.Join(Environment.NewLine, lines);
 
