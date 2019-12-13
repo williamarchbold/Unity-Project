@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿//this class is based on https://www.youtube.com/watch?v=OmynDREHO_8&t=1987s
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickButton : MonoBehaviour
+public class ClickButton : MonoBehaviour //this script is attached to every cube 
 {
     public Material light_material;
     public Material normal_material;
@@ -22,7 +24,7 @@ public class ClickButton : MonoBehaviour
     {
         my_renderer = GetComponent<Renderer>();
         my_renderer.enabled = true;
-        my_transform_position = transform.position; //to know where we are at start
+        // my_transform_position = transform.position; //to know where we are at start
     }
 
     // Update is called once per frame
@@ -33,10 +35,13 @@ public class ClickButton : MonoBehaviour
 
     private void OnMouseDown()
     {
+        my_transform_position = transform.position; //to know where we are when we clicked
+
         if (my_logic.player)
         {
             ClickedColor();
             transform.position = new Vector3(my_transform_position.x, -.2f, my_transform_position.z); //changes shape of object clicked by -.3
+            // transform.position -= new Vector3(0, 0.2f, 0);
             onClick.Invoke(my_number); //tell which button is pressed 
         }
         
@@ -45,7 +50,7 @@ public class ClickButton : MonoBehaviour
     private void OnMouseUp()
     {
         UnClickedColor();
-        transform.position = new Vector3(my_transform_position.x, my_transform_position.y, my_transform_position.z); //changes shape of object clicked by -.3
+        transform.position = my_transform_position; //changes shape of object clicked by -.3
 
     }
 

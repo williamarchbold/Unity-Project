@@ -1,4 +1,4 @@
-﻿//class is based on this tutorial : https://www.youtube.com/watch?v=FSEbPxf0kfs
+﻿//class is derived from this tutorial : https://www.youtube.com/watch?v=FSEbPxf0kfs
 
 using System;
 using System.IO; //input output
@@ -8,14 +8,15 @@ namespace Project.Scoreboards
 {
     public class Scoreboard : MonoBehaviour
     {
-        [SerializeField] private int max_scoreboard_entries = 5;
+        [SerializeField] private int max_scoreboard_entries = 5; //this was from the video. can be changed to whatever desired
         [SerializeField] private Transform high_scores_holder_transform = null;
         [SerializeField] private GameObject scoreboard_entry_object = null;
 
         [Header("Test")]
-        [SerializeField] ScoreboardEntryData test_entry_data = new ScoreboardEntryData();
+        [SerializeField] ScoreboardEntryData test_entry_data = new ScoreboardEntryData(); //allows developer to test entries from the Unity Engine 
 
-        //make a safe path to save to my computer
+        //make a safe path to save to my computer. Application.persistentDataPath is a dynamic means of saving to local machine for different computers
+        //without having to change code. 
         private string save_path => $"{Application.persistentDataPath}/highscores.json";  //where the project is stored. can be .txt not necessarily json
 
         private void Start()
@@ -83,6 +84,8 @@ namespace Project.Scoreboards
             }
         }
 
+
+        //This method is private because it's called earlier in Start and nowhere else
         private ScoreboardSavedData GetSavedScores() //this will retrieve saved scores
         {
             if (!File.Exists(save_path))

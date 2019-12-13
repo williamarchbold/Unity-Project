@@ -1813,7 +1813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2606,7 +2606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.022064956, g: 0.48235294, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2981,7 +2981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9816512, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.99810445, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3094,6 +3094,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1107867245}
+  - component: {fileID: 1107867246}
   m_Layer: 0
   m_Name: CubesParent
   m_TagString: Untagged
@@ -3124,6 +3125,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1107867246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107867244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79314f545d8a5d9439a3258fc02674e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid_size: 4
+  grid_width: 1.5
+  cubes:
+  - {fileID: 160935055}
+  - {fileID: 1241596805}
+  - {fileID: 992998219}
+  - {fileID: 1294075308}
+  - {fileID: 47086987}
+  - {fileID: 37163990}
+  - {fileID: 1712304284}
+  - {fileID: 175042383}
+  - {fileID: 1870731100}
 --- !u!1 &1108054580
 GameObject:
   m_ObjectHideFlags: 0
@@ -3506,6 +3531,8 @@ GameObject:
   - component: {fileID: 1187667742}
   - component: {fileID: 1187667741}
   - component: {fileID: 1187667745}
+  - component: {fileID: 1187667746}
+  - component: {fileID: 1187667747}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -3522,7 +3549,7 @@ MeshCollider:
   m_GameObject: {fileID: 1187667740}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
@@ -3599,8 +3626,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 319cedaf74b32b14f9f4c354ef16777d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursorTracker: {fileID: 1187667746}
+  clickCursorTracker: {fileID: 1187667747}
+  cubeRandomizer: {fileID: 1107867246}
   login: {fileID: 3222986}
-  my_buttons:
+  cubes:
   - {fileID: 160935057}
   - {fileID: 1241596806}
   - {fileID: 992998220}
@@ -3624,6 +3654,32 @@ MonoBehaviour:
   scoreboardsParent: {fileID: 1214595126}
   namePrompt: {fileID: 1108054580}
   inputField: {fileID: 1954555625}
+--- !u!114 &1187667746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187667740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b82fcb5078cc2a341aa5652908ed699b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  login: {fileID: 3222986}
+--- !u!114 &1187667747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187667740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 380e3721fc8f69f43b7be8fc5b931964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  login: {fileID: 3222986}
 --- !u!1 &1214595126
 GameObject:
   m_ObjectHideFlags: 0
@@ -3712,7 +3768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.99654275, b: 0.033018887, a: 1}
+  m_Color: {r: 0.8113208, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5620,7 +5676,7 @@ GameObject:
   - component: {fileID: 1870731102}
   - component: {fileID: 1870731101}
   m_Layer: 0
-  m_Name: Green_Cube (2)
+  m_Name: Dark_Orange_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5652,7 +5708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6563cf9433fbe3844b1ec7fc8e1957f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light_material: {fileID: 2100000, guid: 51ffbebcc48973c4c8455725ef088518, type: 2}
+  light_material: {fileID: 2100000, guid: a28e85ec83eab1c4b87d8b4b601469d6, type: 2}
   normal_material: {fileID: 2100000, guid: 0791350133df9844497cc4b16141271a, type: 2}
   my_number: 99
   my_logic: {fileID: 1187667745}

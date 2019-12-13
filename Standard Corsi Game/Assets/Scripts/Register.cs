@@ -1,5 +1,11 @@
-﻿// this class is based on however modifcations were made. 
-//https://www.youtube.com/watch?v=FBo9OdEF_D4&t=21s
+﻿// this class is based on https://www.youtube.com/watch?v=vFs0_skd0E4
+// however these changed: 
+// 1. no inclusion of emails as in video 
+// 2. added user name and password checking to encrypted password username
+// 3. video also used a bunch of booleans in RegisterButton() but those weren't necessary so took out all references 
+// 4. Video saved files by username which violates projects instruction for privacy so changed algorith in EncryptString()
+//       to a simple Ceaser cypher to fit a valid path name and still be encrypted. 
+
 
 using System.Collections;
 using System.Collections.Generic;
@@ -61,8 +67,8 @@ public class Register : MonoBehaviour
         }
         else
         {
-            string encrypted_password = EncryptString(password_string);
-            string encrypted_username = EncryptString(username_string);
+            string encrypted_password = EncryptString(password_string); //this is not part of the video 
+            string encrypted_username = EncryptString(username_string); //
 
             //string save_path = @"C:\Users\William Archbold\Desktop\Unity Project\" + username_string + ".txt";
             string save_path = Application.persistentDataPath + "\\" + encrypted_username + ".txt";
@@ -78,7 +84,7 @@ public class Register : MonoBehaviour
         }
     }
 
-
+ 
     public static string EncryptString(string input) 
     {
         string encrypted = "";

@@ -1,4 +1,5 @@
-﻿//class is based on this tutorial : https://www.youtube.com/watch?v=FSEbPxf0kfs
+﻿//class is based on this tutorial https://www.youtube.com/watch?v=FSEbPxf0kfs
+//  however SaveScores() and GetSavedScores() were modified 
 
 using System;
 using System.IO; //input output
@@ -85,6 +86,7 @@ namespace Project.Scoreboards
             }
         }
 
+        //based on https://stackoverflow.com/questions/4940124/how-can-i-delete-the-first-n-lines-in-a-string-in-c
         private ScoreboardSavedData GetSavedScores() //this will retrieve saved scores
         {
             if (!File.Exists(save_path))
@@ -97,8 +99,7 @@ namespace Project.Scoreboards
             {
                 string json = stream.ReadToEnd();
 
-                Debug.Log("Json: " + json);
-                //https://stackoverflow.com/questions/4940124/how-can-i-delete-the-first-n-lines-in-a-string-in-c
+                Debug.Log("Json: " + json);               
                 int n = 2;
                 string[] lines = json
                     .Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries) //split up by Environment.NewLine
@@ -112,7 +113,6 @@ namespace Project.Scoreboards
                 return string.IsNullOrEmpty(output) ? new ScoreboardSavedData() : JsonUtility.FromJson<ScoreboardSavedData>(output);
             }
         }
-
 
         //based on https://stackoverflow.com/questions/4940124/how-can-i-delete-the-first-n-lines-in-a-string-in-c
         private void SaveScores(ScoreboardSavedData scoreboardSavedData) //this will save scores to file

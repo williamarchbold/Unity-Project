@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
 
-public class LogIn : MonoBehaviour, IEventSystemHandler 
+public class LogIn : MonoBehaviour, IEventSystemHandler //MonoBehavior is a class, IVent is not a class but an interface 
 {
     public GameObject user_name;
     public GameObject password;
@@ -66,7 +66,7 @@ public class LogIn : MonoBehaviour, IEventSystemHandler
 
         if (password_string != "")
         {
-            string decrpyted_password = DecryptString(user_profile[1]);
+            string decrpyted_password = DecryptString(user_profile[1]); //element 1 is password
 
             
             if (decrpyted_password == password_string)
